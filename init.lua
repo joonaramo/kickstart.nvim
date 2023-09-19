@@ -112,7 +112,7 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
+  { 'folke/which-key.nvim',  opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -188,25 +188,36 @@ require('lazy').setup({
     },
   },
 
-  {
-    -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme 'onedark'
-    end,
-  },
+  -- {
+  --   -- Theme inspired by Atom
+  --   'navarasu/onedark.nvim',
+  --   priority = 1000,
+  --   config = function()
+  --     vim.cmd.colorscheme 'onedark'
+  --   end,
+  -- },
 
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
     -- See `:help lualine.txt`
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+    },
     opts = {
       options = {
-        icons_enabled = false,
-        theme = 'onedark',
+        icons_enabled = true,
+        theme = 'catppuccin',
         component_separators = '|',
         section_separators = '',
+      },
+      sections = {
+        lualine_a = { 'mode' },
+        lualine_b = { 'branch' },
+        lualine_c = { { 'filename', path = 1 } },
+        lualine_x = { 'encoding', 'fileformat', { 'filetype', icon_only = true } },
+        lualine_y = { 'progress' },
+        lualine_z = { 'location' },
       },
     },
   },
@@ -249,6 +260,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
+      'JoosepAlviste/nvim-ts-context-commentstring',
     },
     build = ':TSUpdate',
   },
@@ -256,7 +268,7 @@ require('lazy').setup({
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
-  -- require 'kickstart.plugins.autoformat',
+  require 'kickstart.plugins.autoformat',
   -- require 'kickstart.plugins.debug',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
@@ -265,7 +277,7 @@ require('lazy').setup({
   --    Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
 }, {})
 
 -- [[ Setting options ]]
@@ -309,7 +321,8 @@ vim.o.completeopt = 'menuone,noselect'
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
--- [[ Basic Keymaps ]]
+vim.o.scrolloff = 6
+-- [[ Basic Keymap4 ]]
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
@@ -346,6 +359,9 @@ require('telescope').setup {
         ['<C-d>'] = false,
       },
     },
+    path_display = {
+      "truncate",
+    }
   },
 }
 
@@ -514,7 +530,7 @@ local on_attach = function(_, bufnr)
 
   -- See `:help K` for why this keymap
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-  nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+  nmap('<leader>k', vim.lsp.buf.signature_help, 'Signature Documentation')
 
   -- Lesser used LSP functionality
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
@@ -657,3 +673,54 @@ cmp.setup {
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+vim.api.nvim_exec([[
+command! VSearch execute 'normal! /' . escape(substitute(@", '\^M', '\\n', 'g'), '/\')
+command! -nargs=1 VReplace execute '%s/' . escape(substitute(@", '\^M', '\\n', 'g'), '/\') . '/' . '<args>' . '/'
+]], false)
+
+
+require('Comment').setup(
+  {
+    pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
+  }
+)
+
+-- set colorscheme to "catppuccin"
+vim.cmd.colorscheme 'catppuccin'
+
+-- Use leader + gg for lazygit
+vim.keymap.set("", "<leader>gg", ":!tmux new-window -c " .. vim.fn.getcwd() .. " -- lazygit <CR><CR>", { silent = true })
+
+-- use leader + W to save without formatting
+vim.keymap.set("n", "<leader>W", "<Cmd>noa w<CR>", { silent = true })
+
+-- use leader + f to search git files
+vim.keymap.set("n", "<leader>f", "<Cmd>Telescope find_files<CR>", { silent = true })
+
+-- use leader + e to open Oil
+vim.keymap.set("n", "<leader>e", "<Cmd>Oil<CR>", { silent = true })
+
+-- use leader + gj and leader + gk to go to next/prev git hunk
+vim.keymap.set("n", "<leader>gj", "<Cmd>lua require('gitsigns').next_hunk()<CR>", { silent = true })
+vim.keymap.set("n", "<leader>gk", "<Cmd>lua require('gitsigns').prev_hunk()<CR>", { silent = true })
+
+-- use leader + bc to close buffer
+vim.keymap.set("n", "<leader>bc", "<Cmd>bd<CR>", { silent = true })
+
+-- use alt + j and alt + k to move lines in normal and visual mode
+vim.keymap.set("n", "<A-j>", ":m .+1<CR>==", { silent = true })
+vim.keymap.set("n", "<A-k>", ":m .-2<CR>==", { silent = true })
+vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv", { silent = true })
+vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { silent = true })
+
+-- use leader + gs to open git status
+vim.keymap.set("n", "<leader>gs", "<Cmd>Git<CR>", { silent = true })
+
+-- use leader + pl to load session
+vim.keymap.set("n", "<leader>pl", "<Cmd>lua require('persistence').load()<CR>", { silent = true, desc = "Load session" })
+
+-- use ctrl + hjkl to move between windows
+vim.keymap.set("n", "<C-h>", "<C-w>h", { silent = true })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { silent = true })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { silent = true })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { silent = true })
