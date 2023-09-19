@@ -1,9 +1,14 @@
 return {
   "jose-elias-alvarez/null-ls.nvim",
-  opts = function(_, opts)
+  event = "LspAttach",
+  config = function()
     local nls = require("null-ls")
-    opts.sources = {
-      nls.builtins.formatting.prettierd
-    }
+    nls.setup(
+      {
+        sources = {
+          nls.builtins.formatting.prettierd
+        }
+      }
+    )
   end,
 }
