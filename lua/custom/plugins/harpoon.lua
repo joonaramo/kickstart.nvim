@@ -12,18 +12,18 @@ return {
       desc =
       "Mark file with harpoon"
     },
-    {
-      "<Tab>",
-      "<cmd>lua require('harpoon.ui').nav_next()<cr>",
-      desc =
-      "Go to next harpoon mark"
-    },
-    {
-      "<S-Tab>",
-      "<cmd>lua require('harpoon.ui').nav_prev()<cr>",
-      desc =
-      "Go to previous harpoon mark"
-    },
+    -- {
+    --   "<Tab>",
+    --   "<cmd>lua require('harpoon.ui').nav_next()<cr>",
+    --   desc =
+    --   "Go to next harpoon mark"
+    -- },
+    -- {
+    --   "<S-Tab>",
+    --   "<cmd>lua require('harpoon.ui').nav_prev()<cr>",
+    --   desc =
+    --   "Go to previous harpoon mark"
+    -- },
     {
       "<leader>hh",
       "<cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>",

@@ -322,6 +322,7 @@ vim.o.completeopt = 'menuone,noselect'
 vim.o.termguicolors = true
 
 vim.o.scrolloff = 6
+vim.o.relativenumber = true
 -- [[ Basic Keymap4 ]]
 
 -- Keymaps for better default experience
@@ -524,7 +525,6 @@ local on_attach = function(client, bufnr)
     client.server_capabilities.documentRangeFormattingProvider = false
   end
 
-
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
@@ -589,7 +589,7 @@ local servers = {
   -- gopls = {},
   -- pyright = {},
   -- rust_analyzer = {},
-  tsserver = {},
+  -- tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
 
   lua_ls = {
@@ -712,7 +712,7 @@ vim.keymap.set("n", "<leader>gj", "<Cmd>lua require('gitsigns').next_hunk()<CR>"
 vim.keymap.set("n", "<leader>gk", "<Cmd>lua require('gitsigns').prev_hunk()<CR>", { silent = true })
 
 -- use leader + bc to close buffer
-vim.keymap.set("n", "<leader>bc", "<Cmd>bd<CR>", { silent = true })
+vim.keymap.set("n", "<leader>bc", "<Cmd>Bdelete<CR>", { silent = true })
 
 -- use alt + j and alt + k to move lines in normal and visual mode
 vim.keymap.set("n", "<A-j>", ":m .+1<CR>==", { silent = true })
@@ -731,3 +731,8 @@ vim.keymap.set("n", "<C-h>", "<C-w>h", { silent = true })
 vim.keymap.set("n", "<C-j>", "<C-w>j", { silent = true })
 vim.keymap.set("n", "<C-k>", "<C-w>k", { silent = true })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { silent = true })
+
+-- use leader + cx to stop copilot (:Copilot disable)
+vim.keymap.set("n", "<leader>cx", "<Cmd>Copilot disable<CR>", { silent = true })
+-- use leader + cs to start copilot (:Copilot enable)
+vim.keymap.set("n", "<leader>cs", "<Cmd>Copilot enable<CR>", { silent = true })

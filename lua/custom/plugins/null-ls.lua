@@ -6,7 +6,8 @@ return {
     nls.setup(
       {
         sources = {
-          nls.builtins.formatting.prettierd
+          nls.builtins.formatting.prettierd,
+          require("typescript.extensions.null-ls.code-actions"),
         }
       }
     )
