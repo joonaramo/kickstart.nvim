@@ -362,7 +362,13 @@ require('telescope').setup {
     },
     path_display = {
       "truncate",
-    }
+    },
+  },
+  pickers = {
+    lsp_references = {
+      fname_width = 100,
+      show_line = false,
+    },
   },
 }
 
@@ -738,3 +744,8 @@ vim.keymap.set("n", "<leader>cx", "<Cmd>Copilot disable<CR>", { silent = true })
 vim.keymap.set("n", "<leader>cs", "<Cmd>Copilot enable<CR>", { silent = true })
 -- use leader + gb to toggle git blame (:BlamerToggle)
 vim.keymap.set("n", "<leader>gb", "<Cmd>BlamerToggle<CR>", { silent = true })
+
+-- use leader + dd to toggle Trouble doccument diagnostics (:TroubleToggle lsp_document_diagnostics)
+vim.keymap.set("n", "<leader>dd", function() require("trouble").toggle("document_diagnostics") end,
+  { desc = "Document Diagnostics" })
+-- use leader +
