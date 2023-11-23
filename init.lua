@@ -213,8 +213,8 @@ require('lazy').setup({
       },
       sections = {
         lualine_a = { 'mode' },
-        lualine_b = { 'branch' },
-        lualine_c = { { 'filename', path = 1 } },
+        lualine_b = { { 'filename', path = 1 } },
+        lualine_c = {},
         lualine_x = { 'encoding', 'fileformat', { 'filetype', icon_only = true } },
         lualine_y = { 'progress' },
         lualine_z = { 'location' },
@@ -720,11 +720,11 @@ vim.keymap.set("n", "<leader>gk", "<Cmd>lua require('gitsigns').prev_hunk()<CR>"
 -- use leader + bc to close buffer
 vim.keymap.set("n", "<leader>bc", "<Cmd>Bdelete<CR>", { silent = true })
 
--- use alt + j and alt + k to move lines in normal and visual mode
-vim.keymap.set("n", "<A-j>", ":m .+1<CR>==", { silent = true })
-vim.keymap.set("n", "<A-k>", ":m .-2<CR>==", { silent = true })
-vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv", { silent = true })
-vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { silent = true })
+-- use alt + shift + j and alt + shift + k to move lines in normal and visual mode
+vim.keymap.set("n", "<A-S-j>", ":m .+1<CR>==", { silent = true })
+vim.keymap.set("n", "<A-S-k>", ":m .-2<CR>==", { silent = true })
+vim.keymap.set("v", "<A-S-j>", ":m '>+1<CR>gv=gv", { silent = true })
+vim.keymap.set("v", "<A-S-k>", ":m '<-2<CR>gv=gv", { silent = true })
 
 -- use leader + gs to open git status
 vim.keymap.set("n", "<leader>gs", "<Cmd>Git<CR>", { silent = true })
@@ -748,4 +748,10 @@ vim.keymap.set("n", "<leader>gb", "<Cmd>BlamerToggle<CR>", { silent = true })
 -- use leader + dd to toggle Trouble doccument diagnostics (:TroubleToggle lsp_document_diagnostics)
 vim.keymap.set("n", "<leader>dd", function() require("trouble").toggle("document_diagnostics") end,
   { desc = "Document Diagnostics" })
--- use leader +
+-- use leader + dj to jump to next diagnostic (vim.diagnostic.goto_next())
+vim.keymap.set("n", "<leader>dj", vim.diagnostic.goto_next, { desc = "Next Diagnostic" })
+-- use leader + dk to jump to previous diagnostic (vim.diagnostic.goto_prev())
+vim.keymap.set("n", "<leader>dk", vim.diagnostic.goto_prev, { desc = "Previous Diagnostic" })
+
+-- use leader + gc to show git branches with telescope
+vim.keymap.set("n", "<leader>gc", "<Cmd>Telescope git_branches<CR>", { silent = true })
