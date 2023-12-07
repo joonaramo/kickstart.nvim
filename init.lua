@@ -112,7 +112,7 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim',  opts = {} },
+  { 'folke/which-key.nvim', opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -188,36 +188,25 @@ require('lazy').setup({
     },
   },
 
-  -- {
-  --   -- Theme inspired by Atom
-  --   'navarasu/onedark.nvim',
-  --   priority = 1000,
-  --   config = function()
-  --     vim.cmd.colorscheme 'onedark'
-  --   end,
-  -- },
+  {
+    -- Theme inspired by Atom
+    'navarasu/onedark.nvim',
+    priority = 1000,
+    config = function()
+      vim.cmd.colorscheme 'onedark'
+    end,
+  },
 
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
     -- See `:help lualine.txt`
-    dependencies = {
-      'nvim-tree/nvim-web-devicons',
-    },
     opts = {
       options = {
         icons_enabled = true,
-        theme = 'catppuccin',
+        theme = 'onedark',
         component_separators = '|',
         section_separators = '',
-      },
-      sections = {
-        lualine_a = { 'mode' },
-        lualine_b = { { 'filename', path = 1 } },
-        lualine_c = {},
-        lualine_x = { 'encoding', 'fileformat', { 'filetype', icon_only = true } },
-        lualine_y = { 'progress' },
-        lualine_z = { 'location' },
       },
     },
   },
@@ -260,7 +249,6 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
-      'JoosepAlviste/nvim-ts-context-commentstring',
     },
     build = ':TSUpdate',
   },
@@ -268,7 +256,7 @@ require('lazy').setup({
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
-  require 'kickstart.plugins.autoformat',
+  -- require 'kickstart.plugins.autoformat',
   -- require 'kickstart.plugins.debug',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
@@ -277,7 +265,7 @@ require('lazy').setup({
   --    Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
-  { import = 'custom.plugins' },
+  -- { import = 'custom.plugins' },
 }, {})
 
 -- [[ Setting options ]]
@@ -321,9 +309,7 @@ vim.o.completeopt = 'menuone,noselect'
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
-vim.o.scrolloff = 6
-vim.o.relativenumber = true
--- [[ Basic Keymap4 ]]
+-- [[ Basic Keymaps ]]
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
@@ -359,15 +345,6 @@ require('telescope').setup {
         ['<C-u>'] = false,
         ['<C-d>'] = false,
       },
-    },
-    path_display = {
-      "truncate",
-    },
-  },
-  pickers = {
-    lsp_references = {
-      fname_width = 100,
-      show_line = false,
     },
   },
 }
@@ -510,7 +487,7 @@ end, 0)
 
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
-local on_attach = function(client, bufnr)
+local on_attach = function(_, bufnr)
   -- NOTE: Remember that lua is a real programming language, and as such it is possible
   -- to define small helper and utility functions so you don't have to repeat yourself
   -- many times.
@@ -525,12 +502,6 @@ local on_attach = function(client, bufnr)
     vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
   end
 
-  -- if lsp is tsserver, disable formatting
-  if client.name == 'tsserver' then
-    client.server_capabilities.documentFormattingProvider = false
-    client.server_capabilities.documentRangeFormattingProvider = false
-  end
-
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
@@ -543,7 +514,7 @@ local on_attach = function(client, bufnr)
 
   -- See `:help K` for why this keymap
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-  nmap('<leader>k', vim.lsp.buf.signature_help, 'Signature Documentation')
+  nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
   -- Lesser used LSP functionality
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
@@ -686,17 +657,12 @@ cmp.setup {
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
-vim.api.nvim_exec([[
-command! VSearch execute 'normal! /' . escape(substitute(@", '\^M', '\\n', 'g'), '/\')
-command! -nargs=1 VReplace execute '%s/' . escape(substitute(@", '\^M', '\\n', 'g'), '/\') . '/' . '<args>' . '/'
-]], false)
 
 
-require('Comment').setup(
-  {
-    pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
-  }
-)
+--- ALL MY CUSTOM STUFF GOES HERE
+
+vim.o.scrolloff = 6
+vim.o.relativenumber = true
 
 -- set colorscheme to "catppuccin"
 vim.cmd.colorscheme 'catppuccin'
