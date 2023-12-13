@@ -1,6 +1,6 @@
 return {
   'catppuccin/nvim',
-  priority = 1000,
+  priority = 3000,
   name = "catppuccin",
   opts = {
     transparent_background = false,
@@ -34,4 +34,7 @@ return {
       which_key = true,
     },
   },
+  config = function()
+    vim.cmd.colorscheme 'catppuccin'
+  end,
 }
