@@ -1,3 +1,8 @@
+function MarkAndNotify()
+  require('harpoon.mark').add_file()
+  require('notify')('File marked with harpoon')
+end
+
 return {
   "ThePrimeagen/harpoon",
   lazy = false,
@@ -8,7 +13,7 @@ return {
   keys = {
     {
       "<leader>ha",
-      "<cmd>lua require('harpoon.mark').add_file()<cr> <bar> <cmd>lua require('notify')('File marked with harpoon')<cr>",
+      MarkAndNotify,
       desc =
       "Mark file with harpoon"
     },

@@ -205,9 +205,17 @@ require('lazy').setup({
     opts = {
       options = {
         icons_enabled = true,
-        theme = 'catppuccin',
+        theme = 'auto',
         component_separators = '|',
         section_separators = '',
+      },
+      sections = {
+        lualine_a = { 'mode' },
+        lualine_b = { { 'branch', icon = '' } },
+        lualine_c = { { 'filename', path = 1 } },
+        lualine_x = { 'encoding', 'fileformat', { 'filetype', icon_only = true } },
+        lualine_y = { 'progress' },
+        lualine_z = { 'location' },
       },
     },
   },
@@ -724,3 +732,6 @@ vim.keymap.set("n", "<leader>dk", vim.diagnostic.goto_prev, { desc = "Previous D
 
 -- use leader + gc to show git branches with telescope
 vim.keymap.set("n", "<leader>gc", "<Cmd>Telescope git_branches<CR>", { silent = true })
+
+-- unmap "ha"
+vim.keymap.set("n", "ha", "<Nop>", { silent = true })
