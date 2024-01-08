@@ -166,7 +166,7 @@ require('lazy').setup({
         end, { desc = 'reset git hunk' })
         -- normal mode
         map('n', '<leader>hs', gs.stage_hunk, { desc = 'git stage hunk' })
-        map('n', '<leader>hr', gs.reset_hunk, { desc = 'git reset hunk' })
+        -- map('n', '<leader>hr', gs.reset_hunk, { desc = 'git reset hunk' })
         map('n', '<leader>hS', gs.stage_buffer, { desc = 'git Stage buffer' })
         map('n', '<leader>hu', gs.undo_stage_hunk, { desc = 'undo stage hunk' })
         map('n', '<leader>hR', gs.reset_buffer, { desc = 'git Reset buffer' })
@@ -354,6 +354,9 @@ require('telescope').setup {
         ['<C-u>'] = false,
         ['<C-d>'] = false,
       },
+    },
+    path_display = {
+      'truncate',
     },
   },
 }
@@ -674,6 +677,8 @@ cmp.setup {
 
 vim.o.scrolloff = 6
 vim.o.relativenumber = true
+vim.opt.colorcolumn = "80"
+vim.opt.guicursor = "n-v-c-i:block"
 
 -- set colorscheme to "catppuccin"
 -- vim.cmd.colorscheme 'catppuccin'
@@ -693,6 +698,8 @@ vim.keymap.set("n", "<leader>e", "<Cmd>Oil<CR>", { silent = true })
 -- use leader + gj and leader + gk to go to next/prev git hunk
 vim.keymap.set("n", "<leader>gj", "<Cmd>lua require('gitsigns').next_hunk()<CR>", { silent = true })
 vim.keymap.set("n", "<leader>gk", "<Cmd>lua require('gitsigns').prev_hunk()<CR>", { silent = true })
+-- use leader + gr to reset git hunk
+vim.keymap.set("n", "<leader>gr", "<Cmd>lua require('gitsigns').reset_hunk()<CR>", { silent = true })
 
 -- use leader + bc to close buffer
 vim.keymap.set("n", "<leader>bc", "<Cmd>Bdelete<CR>", { silent = true })
@@ -733,5 +740,6 @@ vim.keymap.set("n", "<leader>dk", vim.diagnostic.goto_prev, { desc = "Previous D
 -- use leader + gc to show git branches with telescope
 vim.keymap.set("n", "<leader>gc", "<Cmd>Telescope git_branches<CR>", { silent = true })
 
--- unmap "ha"
-vim.keymap.set("n", "ha", "<Nop>", { silent = true })
+-- stay in indent mode
+vim.keymap.set("v", "<", "<gv", { silent = true })
+vim.keymap.set("v", ">", ">gv", { silent = true })
