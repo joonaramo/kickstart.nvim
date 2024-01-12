@@ -710,6 +710,12 @@ vim.keymap.set("n", "<A-S-k>", ":m .-2<CR>==", { silent = true })
 vim.keymap.set("v", "<A-S-j>", ":m '>+1<CR>gv=gv", { silent = true })
 vim.keymap.set("v", "<A-S-k>", ":m '<-2<CR>gv=gv", { silent = true })
 
+-- use alt + + and alt + - to resize windows
+vim.keymap.set("n", "<A-+>", ":vertical resize +5<CR>", { silent = true })
+vim.keymap.set("n", "<A-->", ":vertical resize -5<CR>", { silent = true })
+-- use alt + 0 to equalize windows
+vim.keymap.set("n", "<A-0>", "<C-w>=", { silent = true })
+
 -- use leader + gs to open git status
 vim.keymap.set("n", "<leader>gs", "<Cmd>Git<CR>", { silent = true })
 
