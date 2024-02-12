@@ -767,3 +767,5 @@ vim.keymap.set("v", ">", ">gv", { silent = true })
 
 -- use leader + gl to show one-line git log with limit of 100
 vim.keymap.set("n", "<leader>gl", "<Cmd>Git log --oneline -100<CR>", { silent = true })
+-- use leader + gh to show file history
+vim.keymap.set("n", "<leader>gh", "<Cmd>0Gclog<CR>", { silent = true })
