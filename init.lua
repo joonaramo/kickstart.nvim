@@ -113,7 +113,7 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim',  opts = {} },
+  { 'folke/which-key.nvim',   opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -228,9 +228,6 @@ require('lazy').setup({
     main = 'ibl',
     opts = {},
   },
-
-  -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {} },
 
   -- Fuzzy Finder (files, lsp, etc)
   {
@@ -417,10 +414,25 @@ local function telescope_live_grep_open_files()
     prompt_title = 'Live Grep in Open Files',
   }
 end
+
+local function telescope_find_hidden_files()
+  require('telescope.builtin').find_files {
+    hidden = true,
+    no_ignore = true,
+  }
+end
+
+local function telescope_lsp_references()
+  require('telescope.builtin').lsp_references {
+    include_declaration = false,
+    show_line = false,
+  }
+end
+
 vim.keymap.set('n', '<leader>s/', telescope_live_grep_open_files, { desc = '[S]earch [/] in Open Files' })
 vim.keymap.set('n', '<leader>ss', require('telescope.builtin').builtin, { desc = '[S]earch [S]elect Telescope' })
 vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
-vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<leader>sf', telescope_find_hidden_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
@@ -519,7 +531,7 @@ local on_attach = function(_, bufnr)
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
   nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-  nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+  nmap('gr', telescope_lsp_references, '[G]oto [R]eferences')
   nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
   nmap('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
   nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
@@ -728,8 +740,8 @@ vim.keymap.set("n", "<C-j>", "<C-w>j", { silent = true })
 vim.keymap.set("n", "<C-k>", "<C-w>k", { silent = true })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { silent = true })
 
--- use leader + cx to stop copilot (:Copilot disable)
-vim.keymap.set("n", "<leader>cx", "<Cmd>Copilot disable<CR>", { silent = true })
+-- use leader + cd to stop copilot (:Copilot disable)
+vim.keymap.set("n", "<leader>cd", "<Cmd>Copilot disable<CR>", { silent = true })
 -- use leader + cs to start copilot (:Copilot enable)
 vim.keymap.set("n", "<leader>cs", "<Cmd>Copilot enable<CR>", { silent = true })
 -- use leader + gb to toggle git blame (:BlamerToggle)
@@ -738,6 +750,9 @@ vim.keymap.set("n", "<leader>gb", "<Cmd>BlamerToggle<CR>", { silent = true })
 -- use leader + dd to toggle Trouble doccument diagnostics (:TroubleToggle lsp_document_diagnostics)
 vim.keymap.set("n", "<leader>dd", function() require("trouble").toggle("document_diagnostics") end,
   { desc = "Document Diagnostics" })
+-- use leader + dg to toggle Trouble workspace diagnostic
+vim.keymap.set("n", "<leader>dg", function() require("trouble").toggle("workspace_diagnostics") end,
+  { desc = "Workspace Diagnostics" })
 -- use leader + dj to jump to next diagnostic (vim.diagnostic.goto_next())
 vim.keymap.set("n", "<leader>dj", vim.diagnostic.goto_next, { desc = "Next Diagnostic" })
 -- use leader + dk to jump to previous diagnostic (vim.diagnostic.goto_prev())
@@ -749,3 +764,6 @@ vim.keymap.set("n", "<leader>gc", "<Cmd>Telescope git_branches<CR>", { silent = 
 -- stay in indent mode
 vim.keymap.set("v", "<", "<gv", { silent = true })
 vim.keymap.set("v", ">", ">gv", { silent = true })
+
+-- use leader + gl to show one-line git log with limit of 100
+vim.keymap.set("n", "<leader>gl", "<Cmd>Git log --oneline -100<CR>", { silent = true })
