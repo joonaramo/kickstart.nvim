@@ -113,7 +113,7 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim',   opts = {} },
+  { 'folke/which-key.nvim', opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -447,8 +447,7 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = 
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim',
-      'bash' },
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -590,7 +589,7 @@ require('mason-lspconfig').setup()
 local servers = {
   -- clangd = {},
   -- gopls = {},
-  -- pyright = {},
+  pyright = {},
   -- rust_analyzer = {},
   -- tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
@@ -681,87 +680,79 @@ cmp.setup {
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 
-
 --- ALL MY CUSTOM STUFF GOES HERE
 
 vim.o.scrolloff = 6
 vim.o.relativenumber = true
-vim.opt.colorcolumn = "80"
+vim.opt.colorcolumn = '80'
 
 -- set colorscheme to "catppuccin"
 -- vim.cmd.colorscheme 'catppuccin'
 
 -- Use leader + gg for lazygit
-vim.keymap.set("", "<leader>gg", ":!tmux new-window -c " .. vim.fn.getcwd() .. " -- lazygit <CR><CR>", { silent = true })
+vim.keymap.set('', '<leader>gg', ':!tmux new-window -c ' .. vim.fn.getcwd() .. ' -- lazygit <CR><CR>', { silent = true })
 
 -- use leader + W to save without formatting
-vim.keymap.set("n", "<leader>W", "<Cmd>noa w<CR>", { silent = true })
+vim.keymap.set('n', '<leader>W', '<Cmd>noa w<CR>', { silent = true })
 
 -- use leader + f to search git files
-vim.keymap.set("n", "<leader>f", "<Cmd>Telescope find_files<CR>", { silent = true })
+vim.keymap.set('n', '<leader>f', '<Cmd>Telescope find_files<CR>', { silent = true })
 
 -- use leader + e to open Oil
-vim.keymap.set("n", "<leader>e", "<Cmd>Oil<CR>", { silent = true })
+vim.keymap.set('n', '<leader>e', '<Cmd>Oil<CR>', { silent = true })
 
 -- use leader + gj and leader + gk to go to next/prev git hunk
-vim.keymap.set("n", "<leader>gj", "<Cmd>lua require('gitsigns').next_hunk()<CR>", { silent = true })
-vim.keymap.set("n", "<leader>gk", "<Cmd>lua require('gitsigns').prev_hunk()<CR>", { silent = true })
+vim.keymap.set('n', '<leader>gj', "<Cmd>lua require('gitsigns').next_hunk()<CR>", { silent = true })
+vim.keymap.set('n', '<leader>gk', "<Cmd>lua require('gitsigns').prev_hunk()<CR>", { silent = true })
 -- use leader + gr to reset git hunk
-vim.keymap.set("n", "<leader>gr", "<Cmd>lua require('gitsigns').reset_hunk()<CR>", { silent = true })
+vim.keymap.set('n', '<leader>gr', "<Cmd>lua require('gitsigns').reset_hunk()<CR>", { silent = true })
 
 -- use leader + bc to close buffer
-vim.keymap.set("n", "<leader>bc", "<Cmd>Bdelete<CR>", { silent = true })
+vim.keymap.set('n', '<leader>bc', '<Cmd>Bdelete<CR>', { silent = true })
 
 -- use alt + shift + j and alt + shift + k to move lines in normal and visual mode
-vim.keymap.set("n", "<A-S-j>", ":m .+1<CR>==", { silent = true })
-vim.keymap.set("n", "<A-S-k>", ":m .-2<CR>==", { silent = true })
-vim.keymap.set("v", "<A-S-j>", ":m '>+1<CR>gv=gv", { silent = true })
-vim.keymap.set("v", "<A-S-k>", ":m '<-2<CR>gv=gv", { silent = true })
+vim.keymap.set('n', '<A-S-j>', ':m .+1<CR>==', { silent = true })
+vim.keymap.set('n', '<A-S-k>', ':m .-2<CR>==', { silent = true })
+vim.keymap.set('v', '<A-S-j>', ":m '>+1<CR>gv=gv", { silent = true })
+vim.keymap.set('v', '<A-S-k>', ":m '<-2<CR>gv=gv", { silent = true })
 
 -- use alt + + and alt + - to resize windows
-vim.keymap.set("n", "<A-+>", ":vertical resize +5<CR>", { silent = true })
-vim.keymap.set("n", "<A-->", ":vertical resize -5<CR>", { silent = true })
+vim.keymap.set('n', '<A-+>', ':vertical resize +5<CR>', { silent = true })
+vim.keymap.set('n', '<A-->', ':vertical resize -5<CR>', { silent = true })
 -- use alt + 0 to equalize windows
-vim.keymap.set("n", "<A-0>", "<C-w>=", { silent = true })
+vim.keymap.set('n', '<A-0>', '<C-w>=', { silent = true })
 
 -- use leader + gs to open git status
-vim.keymap.set("n", "<leader>gs", "<Cmd>Git<CR>", { silent = true })
+vim.keymap.set('n', '<leader>gs', '<Cmd>Git<CR>', { silent = true })
 
 -- use leader + pl to load session
-vim.keymap.set("n", "<leader>pl", "<Cmd>lua require('persistence').load()<CR>", { silent = true, desc = "Load session" })
-
--- use ctrl + hjkl to move between windows
-vim.keymap.set("n", "<C-h>", "<C-w>h", { silent = true })
-vim.keymap.set("n", "<C-j>", "<C-w>j", { silent = true })
-vim.keymap.set("n", "<C-k>", "<C-w>k", { silent = true })
-vim.keymap.set("n", "<C-l>", "<C-w>l", { silent = true })
+vim.keymap.set('n', '<leader>pl', "<Cmd>lua require('persistence').load()<CR>", { silent = true, desc = 'Load session' })
 
 -- use leader + cd to stop copilot (:Copilot disable)
-vim.keymap.set("n", "<leader>cd", "<Cmd>Copilot disable<CR>", { silent = true })
+vim.keymap.set('n', '<leader>cd', '<Cmd>Copilot disable<CR>', { silent = true })
 -- use leader + cs to start copilot (:Copilot enable)
-vim.keymap.set("n", "<leader>cs", "<Cmd>Copilot enable<CR>", { silent = true })
+vim.keymap.set('n', '<leader>cs', '<Cmd>Copilot enable<CR>', { silent = true })
 -- use leader + gb to toggle git blame (:BlamerToggle)
-vim.keymap.set("n", "<leader>gb", "<Cmd>BlamerToggle<CR>", { silent = true })
+vim.keymap.set('n', '<leader>gb', '<Cmd>BlamerToggle<CR>', { silent = true })
 
--- use leader + dd to toggle Trouble doccument diagnostics (:TroubleToggle lsp_document_diagnostics)
-vim.keymap.set("n", "<leader>dd", function() require("trouble").toggle("document_diagnostics") end,
-  { desc = "Document Diagnostics" })
--- use leader + dg to toggle Trouble workspace diagnostic
-vim.keymap.set("n", "<leader>dg", function() require("trouble").toggle("workspace_diagnostics") end,
-  { desc = "Workspace Diagnostics" })
 -- use leader + dj to jump to next diagnostic (vim.diagnostic.goto_next())
-vim.keymap.set("n", "<leader>dj", vim.diagnostic.goto_next, { desc = "Next Diagnostic" })
+vim.keymap.set('n', '<leader>dj', vim.diagnostic.goto_next, { desc = 'Next Diagnostic' })
 -- use leader + dk to jump to previous diagnostic (vim.diagnostic.goto_prev())
-vim.keymap.set("n", "<leader>dk", vim.diagnostic.goto_prev, { desc = "Previous Diagnostic" })
+vim.keymap.set('n', '<leader>dk', vim.diagnostic.goto_prev, { desc = 'Previous Diagnostic' })
 
 -- use leader + gc to show git branches with telescope
-vim.keymap.set("n", "<leader>gc", "<Cmd>Telescope git_branches<CR>", { silent = true })
+vim.keymap.set('n', '<leader>gc', '<Cmd>Telescope git_branches<CR>', { silent = true })
 
 -- stay in indent mode
-vim.keymap.set("v", "<", "<gv", { silent = true })
-vim.keymap.set("v", ">", ">gv", { silent = true })
+vim.keymap.set('v', '<', '<gv', { silent = true })
+vim.keymap.set('v', '>', '>gv', { silent = true })
 
 -- use leader + gl to show one-line git log with limit of 100
-vim.keymap.set("n", "<leader>gl", "<Cmd>Git log --oneline -100<CR>", { silent = true })
+vim.keymap.set('n', '<leader>gl', '<Cmd>Git log --oneline -100<CR>', { silent = true })
 -- use leader + gh to show file history
-vim.keymap.set("n", "<leader>gh", "<Cmd>0Gclog<CR>", { silent = true })
+vim.keymap.set('n', '<leader>gh', '<Cmd>0Gclog<CR>', { silent = true })
+
+-- use leader + tf for GoTestFunc
+vim.keymap.set('n', '<leader>tf', '<Cmd>GoTestFunc<CR>', { desc = 'Go Test Function' })
+-- use leader + t% for GoTestFile
+vim.keymap.set('n', '<leader>t%', '<Cmd>GoTestFile<CR>', { desc = 'Go Test File' })

@@ -10,6 +10,7 @@ return {
       sources = {
         nls.builtins.formatting.prettierd,
         nls.builtins.formatting.stylua,
+        nls.builtins.formatting.black,
         require 'none-ls.diagnostics.eslint_d',
         require 'none-ls.code_actions.eslint_d',
       },
