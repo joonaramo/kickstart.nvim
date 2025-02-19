@@ -756,3 +756,7 @@ vim.keymap.set('n', '<leader>gh', '<Cmd>0Gclog<CR>', { silent = true })
 vim.keymap.set('n', '<leader>tf', '<Cmd>GoTestFunc<CR>', { desc = 'Go Test Function' })
 -- use leader + t% for GoTestFile
 vim.keymap.set('n', '<leader>t%', '<Cmd>GoTestFile<CR>', { desc = 'Go Test File' })
+
+-- use ctrl + n and ctrl + p in normal mode to go to next and previous in quickfixlist
+vim.keymap.set('n', '<C-n>', '<Cmd>cnext<CR>', { desc = 'Next in quickfix list' })
+vim.keymap.set('n', '<C-p>', '<Cmd>cprev<CR>', { desc = 'Previous in quickfix list' })

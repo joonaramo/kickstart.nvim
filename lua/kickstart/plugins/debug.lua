@@ -21,7 +21,7 @@ return {
     -- Add your own debuggers here
     'leoluz/nvim-dap-go',
 
-    'nvim-neotest/nvim-nio'
+    'nvim-neotest/nvim-nio',
   },
   config = function()
     local dap = require 'dap'
@@ -45,10 +45,11 @@ return {
     }
 
     -- Basic debugging keymaps, feel free to change to your liking!
-    vim.keymap.set('n', '<F5>', dap.continue, { desc = 'Debug: Start/Continue' })
-    vim.keymap.set('n', '<F1>', dap.step_into, { desc = 'Debug: Step Into' })
-    vim.keymap.set('n', '<F2>', dap.step_over, { desc = 'Debug: Step Over' })
-    vim.keymap.set('n', '<F3>', dap.step_out, { desc = 'Debug: Step Out' })
+    vim.keymap.set('n', '<leader>dbc', dap.continue, { desc = 'Debug: Start/Continue' })
+    vim.keymap.set('n', '<leader>dbi', dap.step_into, { desc = 'Debug: Step Into' })
+    vim.keymap.set('n', '<leader>dbo', dap.step_over, { desc = 'Debug: Step Over' })
+    vim.keymap.set('n', '<leader>dbp', dap.step_out, { desc = 'Debug: Step Out' })
+    vim.keymap.set('n', '<leader>dbq', dap.disconnect, { desc = 'Debug: Quit' })
     vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { desc = 'Debug: Toggle Breakpoint' })
     vim.keymap.set('n', '<leader>B', function()
       dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
@@ -61,6 +62,33 @@ return {
       --    Feel free to remove or use ones that you like more! :)
       --    Don't feel like these are good choices.
       icons = { expanded = '▾', collapsed = '▸', current_frame = '*' },
+      layouts = {
+        {
+          elements = {
+            {
+              id = 'scopes',
+              size = 0.5,
+            },
+            {
+              id = 'breakpoints',
+              size = 0.5,
+            },
+          },
+          position = 'left',
+          size = 120,
+        },
+        {
+          elements = { {
+            id = 'repl',
+            size = 0.5,
+          }, {
+            id = 'console',
+            size = 0.5,
+          } },
+          position = 'bottom',
+          size = 10,
+        },
+      },
       controls = {
         icons = {
           pause = '⏸',
