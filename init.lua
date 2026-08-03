@@ -93,6 +93,13 @@ vim.g.maplocalleader = ' '
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 
+-- Keep tool-backed plugins working when Neovim is launched outside an
+-- interactive shell (for example, from a GUI) or after a mise upgrade.
+local mise_shims = vim.fn.expand '~/.local/share/mise/shims'
+if vim.uv.fs_stat(mise_shims) then
+  vim.env.PATH = mise_shims .. ':' .. (vim.env.PATH or '')
+end
+
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
@@ -683,6 +690,7 @@ require('lazy').setup({
       --  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
       --  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
       local capabilities = require('blink.cmp').get_lsp_capabilities()
+      vim.lsp.config('*', { capabilities = capabilities })
 
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -706,6 +714,12 @@ require('lazy').setup({
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         -- ts_ls = {},
         --
+
+        -- Mason's kotlin-lsp package exposes `kotlin-lsp`, while the current
+        -- nvim-lspconfig default still expects the old `intellij-server` name.
+        kotlin_lsp = {
+          cmd = { 'kotlin-lsp', '--stdio' },
+        },
 
         lua_ls = {
           -- cmd = { ... },
@@ -742,19 +756,17 @@ require('lazy').setup({
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
+      -- Neovim 0.11 and mason-lspconfig 2.x use vim.lsp.config instead of the
+      -- removed legacy `handlers` setup. Configure overrides before Mason
+      -- automatically enables every installed server.
+      for server_name, server in pairs(servers) do
+        vim.lsp.config(server_name, server)
+      end
+
       require('mason-lspconfig').setup {
-        ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
-        automatic_installation = false,
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for ts_ls)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
+        ensure_installed = {}, -- mason-tool-installer handles installs above
+        -- stylua is used by conform.nvim as a formatter, not as a second Lua LSP.
+        automatic_enable = { exclude = { 'stylua' } },
       }
     end,
   },
@@ -796,6 +808,8 @@ require('lazy').setup({
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
+        typescript = { 'prettierd', 'prettier', stop_after_first = true },
+        typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
         yaml = { 'prettierd', 'prettier', stop_after_first = true },
         html = { 'prettierd', 'prettier', stop_after_first = true },
       },
@@ -1007,6 +1021,9 @@ require('lazy').setup({
   -- In normal mode type `<space>sh` then write `lazy.nvim-plugin`
   -- you can continue same window with `<space>sr` which resumes last telescope search
 }, {
+  -- None of the configured plugins use LuaRocks. Disabling support avoids
+  -- Lazy trying to manage an unnecessary, broken hererocks installation.
+  rocks = { enabled = false },
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
     -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
